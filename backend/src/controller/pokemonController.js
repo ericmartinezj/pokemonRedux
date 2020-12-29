@@ -5,14 +5,14 @@ const axios = require('axios');
 
 function pokemonController() {
   async function getPokedex(req, res) {
-    const pokeApiUrl = 'https://pokeapi.co/api/v2/pokemon?limit=50&offset=0';
+    const pokeApiUrl = 'https://pokeapi.co/api/v2/pokemon?limit=20&offset=0';
     const pokeImgUrl = 'https://pokeapi.co/api/v2/pokemon-form';
     try {
       const list = await axios.get(pokeApiUrl);
-      let pokemonList = list.data.results;
-      for (let id = 1; id < 50; id++) {
+      const pokemonList = list.data.results;
+      for (let id = 1; id < 20; id++) {
         const { data } = await axios.get(`${pokeImgUrl}/${id}`);
-        pokemonList = [...pokemonList, data.sprites.front_default];
+        pokemonList[id - 1].url = data.sprites.front_default;
       }
       res.json(pokemonList);
     } catch (error) {
